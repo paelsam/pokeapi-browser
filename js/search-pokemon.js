@@ -1,12 +1,12 @@
-import { getPokeImageAndID } from './get-pokemons.js';
+import getPokeImageAndID from '/js/get-poke-image-and-ID.js'
 
 const d = document;
-const $h3 = document.querySelector(".poke-results__container h3");
+const $h3 = document.querySelector(".results h3");
 const $template = document.getElementById("template-card_results").content;
 const $results = document.querySelector(".poke-results");
 const $fragment = document.createDocumentFragment();
 
-export default async function searchPokemon(name) {
+async function searchPokemon(name) {
     try {
         const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=1500`);
         const data = await res.json();
@@ -20,25 +20,23 @@ export default async function searchPokemon(name) {
 }
 
 
-export function displayResults() {
+export default function displayResults() {
     d.addEventListener("keyup", e => {
-        e.stopPropagation();
         $results.innerHTML = "";
-        searchPokemon(e.target.value)
+        searchPokemon(e.target.value.toLowerCase())
             .then(array => {
                 if (e.target.matches('#buscar-poke')) {
                     if (e.target.value.length < 3 || array.length === 0) {
                         array.length = 0;
                         $results.innerHTML = "";
                         $h3.classList.remove("hide");
-                        console.log(e.target.value.length);
+                        // console.log(e.target.value.length);
                     } else {
                         $h3.classList.add("hide");
                         for (const pokemon of array) {
-                            console.log(pokemon);
+                            // console.log(pokemon);
                             const $titulo = $template.querySelector(".card-title"),
                                 $image = $template.querySelector(".card-img-top");
-
 
                             getPokeImageAndID(pokemon.url)
                                 .then(arr => {
@@ -52,7 +50,6 @@ export function displayResults() {
                                     $fragment.appendChild($clone);
                                 })
                                 .catch(error => console.log(error));
-                            // Copiamos el Nodo template
                         }
                         $results.appendChild($fragment);
                     }

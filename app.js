@@ -1,8 +1,5 @@
-import { displayResults } from './js/search-pokemon.js';
-import getPokemons from '/js/get-pokemons.js';
-
+import displayResults from '/js/search-pokemon.js'
 
 document.addEventListener("DOMContentLoaded", () => {
-    getPokemons();
     displayResults();
 })
